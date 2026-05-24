@@ -1,0 +1,4 @@
+forecast_month,forecast_sales,model
+2015-01,360162.22,Holt-Winters Exponential Smoothing
+2015-02,322292.67,Holt-Winters Exponential Smoothing
+2015-03,379070.01,Holt-Winters Exponential Smoothing

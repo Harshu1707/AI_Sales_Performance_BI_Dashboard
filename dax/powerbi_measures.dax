@@ -1,0 +1,57 @@
+-- Power BI DAX measures for the Superstore dashboard
+
+Total Sales =
+SUM ( superstore_clean[sales] )
+
+Total Profit =
+SUM ( superstore_clean[profit] )
+
+Profit Margin % =
+DIVIDE ( [Total Profit], [Total Sales], 0 )
+
+Total Orders =
+DISTINCTCOUNT ( superstore_clean[order_id] )
+
+Average Order Value =
+DIVIDE ( [Total Sales], [Total Orders], 0 )
+
+Customer Count =
+DISTINCTCOUNT ( superstore_clean[customer_id] )
+
+Total Quantity Sold =
+SUM ( superstore_clean[quantity] )
+
+Sales Previous Month =
+CALCULATE (
+    [Total Sales],
+    DATEADD ( superstore_clean[order_date], -1, MONTH )
+)
+
+Sales Growth % =
+DIVIDE ( [Total Sales] - [Sales Previous Month], [Sales Previous Month], 0 )
+
+Profit Previous Month =
+CALCULATE (
+    [Total Profit],
+    DATEADD ( superstore_clean[order_date], -1, MONTH )
+)
+
+Profit Growth % =
+DIVIDE ( [Total Profit] - [Profit Previous Month], [Profit Previous Month], 0 )
+
+Average Discount =
+AVERAGE ( superstore_clean[discount] )
+
+Shipping Cost =
+SUM ( superstore_clean[shipping_cost] )
+
+Net Profit After Shipping =
+[Total Profit] - [Shipping Cost]
+
+Loss Making Products =
+COUNTROWS (
+    FILTER (
+        VALUES ( superstore_clean[product_name] ),
+        CALCULATE ( [Total Profit] ) < 0
+    )
+)
