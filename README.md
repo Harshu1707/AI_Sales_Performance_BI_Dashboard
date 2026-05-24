@@ -187,3 +187,104 @@ Recommended screenshots:
 - Build a customer retention cohort analysis.
 - Add a what-if discount simulator in Power BI.
 
+# InsightIQ - AI Sales Intelligence Dashboard
+
+InsightIQ is a modern full-stack AI business intelligence dashboard for the Kaggle Sample Superstore dataset. It combines a React + Vite executive UI, Flask analytics APIs, Scikit-learn forecasting, CSV upload support, and Gemini `gemini-2.5-flash` insights/chat.
+
+## Features
+
+- Premium dark SaaS dashboard with glassmorphism cards, gradient lighting, responsive layout, hover states, Framer Motion animations, and animated KPI counters.
+- KPI cards for total sales, total profit, profit margin, average order value, customer count, total orders, and sales growth.
+- Recharts visualizations for monthly sales trend, region sales, category profit mix, top products, discount impact, segment analysis, state heatmap, and 3-month forecast.
+- Gemini-powered executive insights and AI business chatbot with local analytics fallbacks when no API key is configured.
+- Flask REST APIs for KPI calculations, chart payloads, forecasting, AI insights, chatbot responses, and CSV upload.
+- SQLite-ready backend structure with a seed utility.
+- Dashboard screenshot export, product search, upload action, refresh action, and theme toggle control.
+
+## Project Structure
+
+```text
+backend/
+|-- app.py
+|-- requirements.txt
+|-- routes/
+|-- services/
+|-- models/
+|-- utils/
+|-- data/
+|-- .env
+frontend/
+|-- src/
+|   |-- services/
+|   |-- App.jsx
+|   |-- main.jsx
+|   |-- styles.css
+|-- package.json
+|-- tailwind.config.js
+|-- vite.config.js
+data/
+|-- raw/superstore.csv
+|-- processed/
+```
+
+## Backend Setup
+
+```bash
+cd backend
+python -m venv .venv
+.venv\Scripts\activate
+pip install -r requirements.txt
+python app.py
+```
+
+The Flask API runs at `http://127.0.0.1:5000`.
+
+## Gemini Setup
+
+Add your Gemini API key to `backend/.env`:
+
+```env
+GEMINI_API_KEY=your_api_key_here
+GEMINI_MODEL=gemini-2.5-flash
+```
+
+If `GEMINI_API_KEY` is empty, the dashboard still works using deterministic local analytics summaries.
+
+## Frontend Setup
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+The React app runs at `http://127.0.0.1:5173` and proxies `/api` requests to Flask.
+
+## API Endpoints
+
+- `GET /api/kpis` - KPI summary.
+- `GET /api/charts` - chart-ready analytics data.
+- `GET /api/forecast` - next 3 months sales forecast.
+- `GET /api/insights` - Gemini or local executive insights.
+- `POST /api/chat` - AI chatbot answer from dataset context.
+- `POST /api/upload` - upload a replacement CSV file.
+
+## Dataset
+
+The app uses the existing Kaggle Sample Superstore file at `data/raw/superstore.csv`. You can also upload a compatible CSV through the dashboard upload button.
+
+## Deployment Notes
+
+- Deploy Flask with Gunicorn or a WSGI host and set `GEMINI_API_KEY` as an environment variable.
+- Build the frontend with `npm run build` and host the generated `frontend/dist` on Vercel, Netlify, or a static server.
+- Configure the frontend host to route `/api/*` to the Flask service.
+
+## Future Improvements
+
+- Add JWT login/register and protected dashboard routes.
+- Persist uploaded datasets and chat sessions per authenticated user.
+- Add Prophet as an optional forecasting engine.
+- Add PDF report generation and scheduled email summaries.
+- Add deployment manifests for Docker, Render, Railway, or Azure.
+
+---
